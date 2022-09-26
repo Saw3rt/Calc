@@ -2,25 +2,35 @@ import Convert.Convert;
 
 import java.util.Scanner;
 
+
 public class Calculator {
     public static void main(String[] args) {
 
-        Convert convert = new Convert();
-        String[] actions = {"+", "-", "/", "*"};
-        String[] regexActions = {"\\+", "-", "/", "\\*"};
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите выражение: ");
         String exp = scanner.nextLine();
+        System.out.println(Calc(exp));
+    }
+
+    public static String Calc(String exp) {
+
+        String strResult = null;
+        Convert convert = new Convert();
+        String[] actions = {"+", "-", "/", "*"};
+        String[] regexActions = {"\\+", "-", "/", "\\*"};
         int actionIndex = -1;
+        int count = 0;
         for (int i = 0; i < actions.length; i++) {
             if (exp.contains(actions[i])) {
                 actionIndex = i;
-                break;
+                count++;
+
             }
+
         }
-        if (actionIndex == -1) {
+        if (actionIndex == -1 || count > 1) {
+
             System.out.println("Некорректное выражение");
-            return;
         }
 
         String[] data = exp.split(regexActions[actionIndex]);
@@ -28,10 +38,10 @@ public class Calculator {
         if (convert.isRoman(data[0]) == convert.isRoman(data[1])) {
             int a, b;
             boolean isRoman = convert.isRoman(data[0]);
-            if(isRoman){
+            if (isRoman) {
                 a = convert.romanToInt(data[0]);
                 b = convert.romanToInt(data[1]);
-            }else{
+            } else {
                 a = Integer.parseInt(data[0]);
                 b = Integer.parseInt(data[0]);
             }
@@ -50,17 +60,27 @@ public class Calculator {
                     result = a / b;
                     break;
             }
-            if(isRoman) {
-                System.out.println(convert.intToRoman(result));
+            if (isRoman) {
+                if(result <= 0){
+                    System.out.println("В римской системе нет отрицательных чисел");
+                }
+                else {
+
+
+                    strResult = convert.intToRoman(result);
+                }
+            } else {
+                strResult = String.valueOf(result);
             }
-            else{
-                System.out.println(result);
-            }
+        } else {
+            System.out.println("Числы в разных форматах");
         }
-        else{
-                System.out.println("Числы в разных форматах");
-            }
-        }
+        return strResult;
+
     }
+}
+
+
+
 
 
