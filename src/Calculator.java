@@ -1,5 +1,6 @@
 import Convert.Convert;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 
@@ -12,7 +13,15 @@ public class Calculator {
         System.out.println(Calc(exp));
     }
 
+
     public static String Calc(String exp) {
+        String[] calc_exp = exp.split("");
+        if(calc_exp.length !=3){
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Неверный формат");
+            exp =  scanner.nextLine();
+
+        }
 
         String strResult = null;
         Convert convert = new Convert();
@@ -26,7 +35,6 @@ public class Calculator {
                 count++;
 
             }
-
         }
         if (actionIndex == -1 || count > 1) {
 
@@ -45,40 +53,49 @@ public class Calculator {
                 a = Integer.parseInt(data[0]);
                 b = Integer.parseInt(data[0]);
             }
-            int result;
-            switch (actions[actionIndex]) {
-                case "+":
-                    result = a + b;
-                    break;
-                case "-":
-                    result = a - b;
-                    break;
-                case "*":
-                    result = a * b;
-                    break;
-                default:
-                    result = a / b;
-                    break;
-            }
-            if (isRoman) {
-                if(result <= 0){
-                    System.out.println("В римской системе нет отрицательных чисел");
+
+            if (a < 1 || a > 10) {
+                try {
+                    throw new IOException();
+                } catch (IOException c) {
+                    System.out.println("Вы не ввели число от 1 до 10");
+                    System.exit(0);
+
                 }
-                else {
+            }
+            int result;
+                switch (actions[actionIndex]) {
+                    case "+":
+                        result = a + b;
+                        break;
+                    case "-":
+                        result = a - b;
+                        break;
+                    case "*":
+                        result = a * b;
+                        break;
+                    default:
+                        result = a / b;
+                        break;
+                }
+                if (isRoman) {
+                    if (result <= 0) {
+                        System.out.println("В римской системе нет отрицательных чисел");
+                    } else {
 
 
-                    strResult = convert.intToRoman(result);
+                        strResult = convert.intToRoman(result);
+                    }
+                } else {
+                    strResult = String.valueOf(result);
                 }
             } else {
-                strResult = String.valueOf(result);
+                System.out.println("Числы в разных форматах");
             }
-        } else {
-            System.out.println("Числы в разных форматах");
-        }
-        return strResult;
+            return strResult;
 
+        }
     }
-}
 
 
 
