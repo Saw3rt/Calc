@@ -22,7 +22,6 @@ public class Calculator {
             exp =  scanner.nextLine();
 
         }
-
         String strResult = null;
         Convert convert = new Convert();
         String[] actions = {"+", "-", "/", "*"};
